@@ -5,8 +5,10 @@
 - # What is it
 
 - # How to use
-- enter to app.go file your postgresql's settings:
+- inside create file db.go with this code:
 ```
+package untitled1
+
 const (
   user     = (hidden)
   host     = (hidden)

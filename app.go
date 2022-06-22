@@ -10,14 +10,58 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
+	"net/http"
 	_ "net/http"
+	goes "untitled1/goes"
 )
+
+type Man struct {
+	gorm.Model
+	Name    string `json:"name"`
+	Surname string `json:"surname"`
+	Age     int    `json:"age"`
+}
+
+func getMan(context *gin.Context) {
+
+	mans := []Man{}
+	DB.Find(&mans)
+	context.IndentedJSON(http.StatusOK, mans)
+}
+
+func getPerson(context *gin.Context) {
+	var man Man
+	DB.Where("id = ?", context.Param("id")).First(&man)
+	context.IndentedJSON(http.StatusOK, man)
+}
+
+func createMan(context *gin.Context) {
+
+	var man Man
+	context.BindJSON(&man)
+	DB.Create(&man)
+	context.IndentedJSON(http.StatusOK, &man)
+}
+
+func updateMan(context *gin.Context) {
+	var man Man
+	DB.Where("id = ?", context.Param("id")).First(&man)
+	context.BindJSON(&man)
+	DB.Save(&man)
+	context.IndentedJSON(http.StatusOK, man)
+}
+
+func deleteMan(context *gin.Context) {
+	var man Man
+	DB.Where("id = ?", context.Param("id")).Delete(&man)
+	context.IndentedJSON(http.StatusOK, man)
+}
 
 var DB *gorm.DB
 var err error
 
-var DSN string = fmt.Sprintf("user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Asia/Shanghai", user, password, database, host)
-var url = fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=%s", user, password, host, port, database, sslmode)
+var DSN string = fmt.Sprintf("user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Asia/Shanghai", goes.User, goes.Password, goes.Database, goes.Host)
+var url = fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=%s", goes.User, goes.Password, goes.Host, goes.Port, goes.Database, goes.Sslmode)
 
 func createDb() {
 
