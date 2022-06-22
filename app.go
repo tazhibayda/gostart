@@ -10,17 +10,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
-	"net/http"
 	_ "net/http"
-)
-
-const (
-	user     = "doadmin"
-	host     = "db-postgresql-nyc3-68283-do-user-11850704-0.b.db.ondigitalocean.com"
-	database = "defaultdb"
-	password = "AVNS_aAj5qOqIwSArkVJrorC"
-	port     = 25060
-	sslmode  = "require"
 )
 
 var DB *gorm.DB
@@ -40,52 +30,9 @@ func createDb() {
 
 }
 
-type Man struct {
-	gorm.Model
-	Name    string `json:"name"`
-	Surname string `json:"surname"`
-	Age     int    `json:"age"`
-}
-
-func getMan(context *gin.Context) {
-
-	mans := []Man{}
-	DB.Find(&mans)
-	context.IndentedJSON(http.StatusOK, mans)
-}
-
-func getPerson(context *gin.Context) {
-	var man Man
-	DB.Where("id = ?", context.Param("id")).First(&man)
-	context.IndentedJSON(http.StatusOK, man)
-}
-
-func createMan(context *gin.Context) {
-
-	var man Man
-	context.BindJSON(&man)
-	DB.Create(&man)
-	context.IndentedJSON(http.StatusOK, &man)
-}
-
-func updateMan(context *gin.Context) {
-	var man Man
-	DB.Where("id = ?", context.Param("id")).First(&man)
-	context.BindJSON(&man)
-	DB.Save(&man)
-	context.IndentedJSON(http.StatusOK, man)
-}
-
-func deleteMan(context *gin.Context) {
-	var man Man
-	DB.Where("id = ?", context.Param("id")).Delete(&man)
-	context.IndentedJSON(http.StatusOK, man)
-}
-
 func initRouter() {
 	router := gin.Default()
 	router.Use(cors.Default())
-	//gin.HandlerFunc("/list", getMan)
 	router.GET("/list", getMan)
 	router.GET("/list/:id", getPerson)
 	router.POST("/create", createMan)
