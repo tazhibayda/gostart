@@ -96,6 +96,7 @@ func initRouter() {
 
 func main() {
 
+	fmt.Println("Hello wOtm;xzfk ")
 	createDb()
 	initRouter()
 	// this
