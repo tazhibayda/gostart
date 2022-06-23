@@ -31,7 +31,7 @@ type Man struct {
 }
 
 func getMan(context *gin.Context) {
-
+	fmt.Println(context.Request.Host + context.Request.URL.Path)
 	mans := []Man{}
 	DB.Find(&mans)
 	context.IndentedJSON(http.StatusOK, mans)
@@ -90,7 +90,7 @@ func initRouter() {
 	router.POST("/create", createMan)
 	router.PUT("/list/:id", updateMan)
 	router.DELETE("/list/:id", deleteMan)
-
+	fmt.Println()
 	log.Fatal(router.Run())
 }
 
