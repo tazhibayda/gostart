@@ -12,7 +12,15 @@ import (
 	"log"
 	"net/http"
 	_ "net/http"
-	goes "untitled1/goes"
+)
+
+const (
+	User     = "doadmin"
+	Host     = "db-postgresql-nyc3-68283-do-user-11850704-0.b.db.ondigitalocean.com"
+	Database = "defaultdb"
+	Password = "AVNS_aAj5qOqIwSArkVJrorC"
+	Port     = 25060
+	Sslmode  = "require"
 )
 
 type Man struct {
@@ -60,8 +68,8 @@ func deleteMan(context *gin.Context) {
 var DB *gorm.DB
 var err error
 
-var DSN string = fmt.Sprintf("user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Asia/Shanghai", goes.User, goes.Password, goes.Database, goes.Host)
-var url = fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=%s", goes.User, goes.Password, goes.Host, goes.Port, goes.Database, goes.Sslmode)
+//var DSN string = fmt.Sprintf("user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Asia/Shanghai", goes.User, goes.Password, goes.Database, goes.Host)
+var url = fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=%s", User, Password, Host, Port, Database, Sslmode)
 
 func createDb() {
 
